@@ -53,3 +53,39 @@ def find_eigenstate(qubo, ansatz):
     
     return final_qubit_states
 
+
+def hardware_efficient_ansatz(params, wires):
+    num_wires = len(wires)
+    for i in range(num_wires):
+        qml.RY(params[i], wires=wires[i])
+        qml.RZ(params[num_wires + i], wires=wires[i])
+    for i in range(num_wires - 1):
+        qml.CNOT(wires=[wires[i], wires[i + 1]])
+
+def single_layer_ansatz(params, wires):
+    num_wires = len(wires)
+    for i in range(num_wires):
+        qml.RX(params[i], wires=wires[i])
+        qml.RZ(params[num_wires + i], wires=wires[i])
+    for i in range(num_wires - 1):
+        qml.CNOT(wires=[wires[i], wires[i + 1]])
+
+
+def qaoa_ansatz(params, wires):
+    num_wires = len(wires)
+    for i in range(num_wires):
+        qml.RY(params[i], wires=wires[i])
+    for i in range(num_wires - 1):
+        qml.CNOT(wires=[wires[i], wires[i + 1]])
+    for i in range(num_wires):
+        qml.RY(params[num_wires + i], wires=wires[i])
+
+
+def alternating_layer_ansatz(params, wires):
+    num_wires = len(wires)
+    for i in range(num_wires):
+        qml.RX(params[i], wires=wires[i])
+        qml.RY(params[num_wires + i], wires=wires[i])
+    for i in range(num_wires - 1):
+        qml.CNOT(wires=[wires[i], wires[i + 1]])
+
